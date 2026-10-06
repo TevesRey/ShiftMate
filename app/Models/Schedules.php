@@ -15,10 +15,10 @@ class Schedules extends Model
 
     public function user()
     {
-        return $belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
     public function shifts()
     {
-        return $belongsTo(Shifts::class);
+        return $this->belongsTo(Shifts::class);
     }
 }
