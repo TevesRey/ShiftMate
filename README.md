@@ -98,3 +98,184 @@ These additions will make the project easier to onboard, improve maintainability
 - **Docker**: Optional Dockerfile and `docker-compose.yml` for local dev environment.
 
 These specifications translate the database schema into a full Laravel API stack, ensuring each table has a corresponding Model, Controller, Form Request, Resource, routes, tests, and documentation.
+
+## Example: Category Resource
+
+### Model (`app/Models/Category.php`)
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Category extends Model
+{
+    protected $fillable = [
+        'name',
+        'description',
+    ];
+
+    // Optional relationship example
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
+}
+```
+
+### Form Request (`app/Http/Requests/StoreCategoryRequest.php`)
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class StoreCategoryRequest extends FormRequest
+{
+    public function authorize()
+    {
+        // Adjust as needed, e.g., only admins can create
+        return true;
+    }
+
+    public function rules()
+    {
+        return [
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:1000',
+        ];
+    }
+}
+```
+
+### Update Form Request (`app/Http/Requests/UpdateCategoryRequest.php`)
+```php
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class UpdateCategoryRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return true;
+    }
+
+    public function rules()
+    {
+        $categoryId = $this->route('category');
+        return [
+            'name' => "required|string|max:255|unique:categories,name,$categoryId",
+            'description' => 'nullable|string|max:1000',
+        ];
+    }
+}
+```
+
+### Resource (`app/Http/Resources/CategoryResource.php`)
+```php
+<?php
+
+namespace App\Http\Resources;
+
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class CategoryResource extends JsonResource
+{
+    public function toArray($request)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'created_at' => $this->created_at->toIso8601String(),
+            'updated_at' => $this->updated_at->toIso8601String(),
+        ];
+    }
+}
+```
+
+### Controller (`app/Http/Controllers/Api/CategoryController.php`)
+```php
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CategoryResource;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Models\Category;
+
+class CategoryController extends Controller
+{
+    public function index()
+    {
+        return CategoryResource::collection(Category::paginate(20));
+    }
+
+    public function store(StoreCategoryRequest $request)
+    {
+        $category = Category::create($request->validated());
+        return new CategoryResource($category);
+    }
+
+    public function show(Category $category)
+    {
+        return new CategoryResource($category);
+    }
+
+    public function update(UpdateCategoryRequest $request, Category $category)
+    {
+        $category->update($request->validated());
+        return new CategoryResource($category);
+    }
+
+    public function destroy(Category $category)
+    {
+        $category->delete();
+        return response(null, 204);
+    }
+}
+```
+
+### Routes (`routes/api.php`)
+```php
+use App\Http\Controllers\Api\CategoryController;
+
+Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
+```
+
+### Test Example (`tests/Feature/Api/CategoryTest.php`)
+```php
+<?php
+
+namespace Tests\Feature\Api;
+
+use Tests\TestCase;
+use App\Models\Category;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+class CategoryTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_can_create_category()
+    {
+        $payload = ['name' => 'Demo', 'description' => 'Demo category'];
+        $response = $this->actingAs($this->user, 'sanctum')
+                         ->postJson('/api/categories', $payload);
+        $response->assertCreated()->assertJsonFragment(['name' => 'Demo']);
+        $this->assertDatabaseHas('categories', $payload);
+    }
+
+    // Additional tests for index, show, update, delete ...
+}
+```
+
+These snippets illustrate a complete Laravel CRUD cycle for a `Category` entity and can be copied as a template for other resources.
+
