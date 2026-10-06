@@ -16,12 +16,19 @@ class RestDayRequests extends Model
         'reviewed_at',
     ];
 
+    public function casts(): array
+    {
+        return [
+            'reviewed_at' => 'datetime',
+        ];
+    }
+
     public function employee()
     {
-        return $belongsTo(Employees::class);
+        return $this->belongsTo(Employees::class);
     }
     public function user()
     {
-        return $belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }

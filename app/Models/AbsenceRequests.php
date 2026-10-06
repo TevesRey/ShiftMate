@@ -8,7 +8,7 @@ class AbsenceRequests extends Model
 {
     protected $fillable = [
         'employee_id',
-        'schdule_id',
+        'schedule_id',
         'absence_date',
         'status',
         'reviewed_by',
@@ -17,10 +17,10 @@ class AbsenceRequests extends Model
 
     public function employee()
     {
-        return $belongsTo(Employee::class);
+        return $this->belongsTo(Employees::class);
     }
-    public function reviewed_at()
+    public function reviewer()
     {
-        return $belongsTo(User::class);
+        return $this->belongsTo(User::class);
     }
 }
