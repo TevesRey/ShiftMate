@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('absence_request', function (Blueprint $table) {
+        Schema::create('absence_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
             $table->date('absence_date');
             $table->string('description');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
-            $table->foreignId('reviewed_by')->constrained()->onDelete('cascade');
+            $table->foreignId('reviewed_by')->constrained('users')->onDelete('cascade');
             $table->timestamp('reviewed_at');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('absence_request');
+        Schema::dropIfExists('absence_requests');
     }
 };
