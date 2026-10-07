@@ -78,14 +78,42 @@ php artisan migrate:fresh --seed
 ```
 
 ### Sample Credentials
-All seeded users share the same default password:
-- **Password**: `password`
-- **Emails**: Various generated emails (e.g., `user-something@example.com`)
+All seeded users share the same default password: `password`.
 
-You can find the full list of seeded emails by running:
-```bash
-php artisan tinker --execute="foreach(App\Models\User::all() as \$u) { echo \$u->email . PHP_EOL; }"
-```
+**List of Sample Accounts:**
+- user-fadel.lexie@example.net : password
+- user-bertha72@example.net : password
+- user-alycia.mayer@example.com : password
+- user-olangosh@example.net : password
+- user-rowe.jan@example.net : password
+- user-shammes@example.net : password
+- user-xmcglynn@example.org : password
+- user-virgie54@example.com : password
+- user-ernser.dion@example.org : password
+- user-lgorczany@example.org : password
+- user-briana38@example.com : password
+- user-fbeer@example.org : password
+- user-jwisoky@example.com : password
+- user-alejandra37@example.net : password
+- user-amani13@example.org : password
+- oreilly.joseph@example.org : password
+- gkulas@example.net : password
+- tiara.kihn@example.net : password
+- raoul.brown@example.net : password
+- bdouglas@example.com : password
+- gleason.emily@example.net : password
+- ufeil@example.net : password
+- rboehm@example.com : password
+- billie.emmerich@example.org : password
+- devon.corkery@example.com : password
+- laurel.spinka@example.org : password
+- stamm.hazel@example.org : password
+- kayli22@example.net : password
+- wrunolfsson@example.org : password
+- frederick82@example.org : password
+- tressie.yundt@example.org : password
+- moreilly@example.net : password
+- ehagenes@example.com : password
 
 ---
 
