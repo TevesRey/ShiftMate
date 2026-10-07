@@ -81,39 +81,39 @@ php artisan migrate:fresh --seed
 All seeded users share the same default password: `password`.
 
 **List of Sample Accounts:**
-- user-fadel.lexie@example.net : password
-- user-bertha72@example.net : password
-- user-alycia.mayer@example.com : password
-- user-olangosh@example.net : password
-- user-rowe.jan@example.net : password
-- user-shammes@example.net : password
-- user-xmcglynn@example.org : password
-- user-virgie54@example.com : password
-- user-ernser.dion@example.org : password
-- user-lgorczany@example.org : password
-- user-briana38@example.com : password
-- user-fbeer@example.org : password
+- user-fadel.lexie@example.net : employee : password
+- user-bertha72@example.net : employee : password
+- user-alycia.mayer@example.com : employee : password
+- user-olangosh@example.net : employee : password
+- user-rowe.jan@example.net : employee : password
+- user-shammes@example.net : employee : password
+- user-xmcglynn@example.org : employee : password
+- user-virgie54@example.com : employee : password
+- user-ernser.dion@example.org : employee : password
+- user-lgorczany@example.org : employee : password
+- user-briana38@example.com : employee : password
+- user-fbeer@example.org : employee : password
 - user-jwisoky@example.com : password
-- user-alejandra37@example.net : password
-- user-amani13@example.org : password
-- oreilly.joseph@example.org : password
-- gkulas@example.net : password
-- tiara.kihn@example.net : password
-- raoul.brown@example.net : password
-- bdouglas@example.com : password
-- gleason.emily@example.net : password
-- ufeil@example.net : password
-- rboehm@example.com : password
-- billie.emmerich@example.org : password
-- devon.corkery@example.com : password
-- laurel.spinka@example.org : password
-- stamm.hazel@example.org : password
-- kayli22@example.net : password
-- wrunolfsson@example.org : password
-- frederick82@example.org : password
-- tressie.yundt@example.org : password
-- moreilly@example.net : password
-- ehagenes@example.com : password
+- user-alejandra37@example.net : employee : password
+- user-amani13@example.org : employee : password
+- oreilly.joseph@example.org : employee : password
+- gkulas@example.net : employee : password
+- tiara.kihn@example.net : employee : password
+- raoul.brown@example.net : employee : password
+- bdouglas@example.com : employee : password
+- gleason.emily@example.net : employee : password
+- ufeil@example.net : employee : password
+- rboehm@example.com : employee : password
+- billie.emmerich@example.org : employee : password
+- devon.corkery@example.com : employee : password
+- laurel.spinka@example.org : employee : password
+- stamm.hazel@example.org : employee : password
+- kayli22@example.net : employee : password
+- wrunolfsson@example.org : employee : password
+- frederick82@example.org : employee : password
+- tressie.yundt@example.org : employee : password
+- moreilly@example.net : employee : password
+- ehagenes@example.com : employee : password
 
 ---
 
