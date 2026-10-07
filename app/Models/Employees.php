@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employees extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
     protected $fillable = [
         'user_id',
         'employee_number',

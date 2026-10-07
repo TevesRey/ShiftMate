@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class RestDayRequests extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
+    protected $table = 'rest_day_request';
+
     protected $fillable = [
         'employee_id',
         'current_rest_day',

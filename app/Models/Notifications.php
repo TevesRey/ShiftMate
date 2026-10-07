@@ -6,6 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Notifications extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
+    protected $table = 'notification';
+
     protected $fillable = [
         'user_id',
         'title',

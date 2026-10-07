@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AbsenceRequests extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
     protected $fillable = [
         'employee_id',
         'schedule_id',
