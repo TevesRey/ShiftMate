@@ -70,6 +70,25 @@ All API endpoints (except Register and Login) are protected by the **Sanctum Mid
 
 ---
 
+## 🚀 Getting Started & Sample Data
+
+To set up the project with sample data for testing, run:
+```bash
+php artisan migrate:fresh --seed
+```
+
+### Sample Credentials
+All seeded users share the same default password:
+- **Password**: `password`
+- **Emails**: Various generated emails (e.g., `user-something@example.com`)
+
+You can find the full list of seeded emails by running:
+```bash
+php artisan tinker --execute="foreach(App\Models\User::all() as \$u) { echo \$u->email . PHP_EOL; }"
+```
+
+---
+
 ## 🔍 Debugging Guide
 
 If you encounter issues, follow these steps to identify the root cause:
