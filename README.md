@@ -1,281 +1,100 @@
-# ShiftMate
+# ShiftMate API
 
-## Suggested Additions
+ShiftMate is a workforce management system designed to handle shifts, employee schedules, absence requests, and rest day modifications.
 
-- **Installation**: Provide step‑by‑step instructions for setting up the project (e.g., cloning, installing dependencies via `composer install` and `npm install`, configuring environment variables).
-- **API Documentation**: Add a section describing the available API endpoints, request/response formats, and authentication requirements. Consider generating OpenAPI/Swagger spec and linking it.
-- **Usage Examples**: Include example commands or code snippets showing how to call the API (cURL examples, Postman collection).
-- **Testing**: Explain how to run the test suite (`php artisan test`), and add guidelines for writing new tests.
-- **CI/CD**: Recommend setting up GitHub Actions for linting, testing, and deployment. Provide a sample workflow file.
-- **Contribution Guide**: Add a `CONTRIBUTING.md` with coding standards, branch strategy, and pull‑request process.
-- **License**: Specify the project license (e.g., MIT) if not already present.
+## 🛠 Architecture & Design Patterns
 
-These additions will make the project easier to onboard, improve maintainability, and help collaborators understand and extend the system.
+The project follows the **Standard Laravel API Pattern**, ensuring a clean separation of concerns:
 
-## Implementation Notes
+### 1. Request Validation Layer (`app/Http/Requests`)
+Instead of validating data inside controllers, we use **Form Requests**.
+- **Store Requests**: Handle strict validation for creating new records (e.g., `StoreEmployeesRequest`).
+- **Update Requests**: Use the `sometimes` rule, allowing partial updates without requiring the full object.
+- **Enum Validation**: All status fields are validated using `in:value1,value2` to match database migration constraints.
 
-- **Controllers**: Add new API controllers under `app/Http/Controllers/Api` for each resource. Follow Laravel conventions, inject services via the constructor, and use request validation.
-- **Form Requests**: Create dedicated Form Request classes (`php artisan make:request <Name>Request`) to handle validation logic for create/update endpoints.
-- **Routes**: Register API routes in `routes/api.php` using `Route::apiResource` or explicit route definitions with proper middleware (`auth:sanctum`).
-- **Resources / Transformers**: Use Laravel API resources (`php artisan make:resource <Model>Resource`) to shape JSON responses.
-- **Service Layer**: Optionally introduce service classes in `app/Services` to keep controllers thin.
-- **Testing**: Write feature tests for each endpoint (`tests/Feature/Api/<Model>Test.php`) covering success, validation errors, and auth scenarios.
-- **Documentation**: Generate OpenAPI schema with tools like `scribe` or `laravel-openapi` and link in the README.
+### 2. Controller Layer (`app/Http/Controllers/API`)
+Controllers are kept thin and focus on directing traffic.
+- **Standard CRUD**: Every resource implements `index`, `store`, `show`, `update`, and `destroy`.
+- **Eager Loading**: Uses `.with()` in `index` and `show` methods to prevent "N+1" query problems.
+- **Response Format**: Returns consistent JSON responses with appropriate HTTP status codes (200 OK, 201 Created, 204 No Content, 404 Not Found).
 
-## Detailed Implementation Guide
+### 3. Data Layer (`app/Models`)
+Models define the business entity and its relationships.
+- **Fillable**: Only safe attributes are mass-assignable.
+- **Relations**:- `Schedules` $\rightarrow$ `User`, `Shifts`
+- `AbsenceRequests` $\rightarrow$ `Employees`
+- `RestDayRequests` $\rightarrow$ `Employees`
+- `Employees` $\rightarrow$ `User`
 
-### Employees
-- **Model**: `app/Models/Employee.php` – belongsTo `User`.
-  ```php
-  class Employee extends Model
-  {
-      protected $fillable = [
-          'user_id', 'employee_number', 'first_name', 'last_name',
-          'position', 'department', 'contact_number', 'status',
-      ];
+---
 
-      public function user()
-      {
-          return $this->belongsTo(User::class);
-      }
-  }
-  ```
-- **Form Request**: `StoreEmployeeRequest` (create) and `UpdateEmployeeRequest` (update). Validation rules include `employee_number` numeric, `first_name`/`last_name` required strings, `contact_number` regex, `status` in:active,inactive.
-- **Controller**: `EmployeeController` (API) with methods `index`, `store`, `show`, `update`, `destroy`. Use Form Requests, inject `Employee` model, return `EmployeeResource`.
-- **Resource**: `EmployeeResource` formats JSON with `id`, `employee_number`, `full_name`, `position`, `department`, `contact_number`, `status`.
-- **Routes** (`routes/api.php`): `Route::apiResource('employees', EmployeeController::class)->middleware('auth:sanctum');`
-- **Tests**: Feature tests covering CRUD, validation errors, and authorization.
+## 📂 File Structure
 
-### Shifts
-- **Model**: `app/Models/Shift.php` – hasMany `Schedule`.
-- **Migration notes**: fields `shift_name`, `start_time`, `date_time` (should be `end_time` – we recommend renaming), `description`.
-- **Form Request**: `StoreShiftRequest` / `UpdateShiftRequest` – validate `shift_name` required, `start_time` and `date_time` as `date_format:H:i:s` (or correct to `end_time`).
-- **Controller**: `ShiftController` with standard resource actions, plus optional `assign` method to link shifts to schedules.
-- **Resource**: `ShiftResource`.
-- **Routes**: `Route::apiResource('shifts', ShiftController::class);
-- **Tests**: CRUD tests, ensure time fields are stored correctly.
-
-### Schedules
-- **Model**: `app/Models/Schedule.php` – belongsTo `User` and `Shift`.
-- **Form Request**: `StoreScheduleRequest` validates `user_id` exists, `shift_id` exists, `work_date` as `date`, `status` enum.
-- **Controller**: `ScheduleController` – includes `index` (filter by date/user), `store`, `show`, `update`, `destroy`.
-- **Resource**: `ScheduleResource` includes nested `ShiftResource` for shift details.
-- **Routes**: `Route::apiResource('schedules', ScheduleController::class);
-- **Tests**: Verify schedule creation respects foreign keys and status defaults.
-
-### Rest Day Requests
-- **Model**: `app/Models/RestDayRequest.php` – belongsTo `User`.
-- **Migration**: contains fields for request date, reason, status.
-- **Form Request**: `StoreRestDayRequest` validates `requested_date` as future date, `reason` required.
-- **Controller**: `RestDayRequestController` with `store` (user submits), `index` (admin view), `update` (approve/deny).
-- **Resource**: `RestDayRequestResource`.
-- **Routes**: `Route::apiResource('rest-day-requests', RestDayRequestController::class);
-- **Tests**: Submission and approval flow.
-
-### Absence Requests
-- Same pattern as Rest Day Requests – model `AbsenceRequest`, fields for `type` (sick, personal), `start_date`, `end_date`, `reason`, `status`.
-- Provide dedicated controller, form requests, resources, routes, and tests.
-
-### Notifications
-- **Model**: `app/Models/Notification.php` – polymorphic relation to notifiable (User, Team, etc.).
-- Use Laravel's built‑in notification system; create custom notification classes in `app/Notifications`.
-- Provide API endpoint to fetch user notifications: `NotificationController@index` returns paginated `NotificationResource`.
-- Routes: `Route::get('notifications', [NotificationController::class, 'index'])->middleware('auth:sanctum');`
-
-### Teams (if applicable)
-- **Model**: `Team` (Laravel Jetstream style) – many‑to‑many with users.
-- Controllers for team management: `TeamController` (create, update, add/remove members).
-- Form Requests for team name, owner.
-- Resources and routes as needed.
-
-### General Guidelines
-- **Policy**: Create policies (`php artisan make:policy EmployeePolicy`) to restrict actions to owners or admins.
-- **Service Layer**: For complex business logic (e.g., schedule conflict detection), create services in `app/Services/ScheduleService.php`.
-- **Exception Handling**: Use Form Request validation errors and return standard JSON error format.
-- **OpenAPI**: Document each endpoint with request/response schema; generate `openapi.yaml` via `scribe` and place it under `docs/`.
-- **CI**: Add GitHub Actions workflow (`.github/workflows/ci.yml`) to run `php artisan test`, `npm run lint`, and `composer validate` on push/PR.
-- **Seeders**: Provide database seeders for demo data (`database/seeders/EmployeeSeeder.php`).
-- **Docker**: Optional Dockerfile and `docker-compose.yml` for local dev environment.
-
-These specifications translate the database schema into a full Laravel API stack, ensuring each table has a corresponding Model, Controller, Form Request, Resource, routes, tests, and documentation.
-
-## Example: Category Resource
-
-### Model (`app/Models/Category.php`)
-```php
-<?php
-
-namespace App\Models;
-
-use Illuminate\Database\Eloquent\Model;
-
-class Category extends Model
-{
-    protected $fillable = [
-        'name',
-        'description',
-    ];
-
-    // Optional relationship example
-    public function products()
-    {
-        return $this->hasMany(Product::class);
-    }
-}
+```text
+app/
+├── Http/
+│   ├── Controllers/
+│   │   └── API/
+│   │       ├── AuthController.php        # Login, Register, Logout
+│   │       ├── EmployeeController.php    # Employee Management
+│   │       ├── ShiftController.php       # Shift Definitions
+│   │       ├── ScheduleController.php    # Work Assignments
+│   │       ├── AbsenceRequestController.php # Absence Tracking
+│   │       ├── RestDayRequestController.php # Rest Day Changes
+│   │       └── NotificationController.php  # User Alerts
+│   └── Requests/
+│       ├── Store...Request.php          # Create Validation
+│       └── Update...Request.php          # Update Validation
+├── Models/
+│   ├── User.php                          # Core User Account
+│   ├── Employees.php                      # Employee Details
+│   ├── Shifts.php                        # Shift Times/Names
+│   ├── Schedules.php                     # User-Shift mappings
+│   ├── AbsenceRequests.php                # Absence tracking
+│   ├── RestDayRequests.php               # Rest day tracking
+│   └── Notifications.php                  # System alerts
+routes/
+└── api.php                               # API Endpoint Definitions
+database/
+└── migrations/                           # DB Schema Definitions
 ```
 
-### Form Request (`app/Http/Requests/StoreCategoryRequest.php`)
-```php
-<?php
+---
 
-namespace App\Http\Requests;
+## 🔐 Security & Middleware
 
-use Illuminate\Foundation\Http\FormRequest;
+All API endpoints (except Register and Login) are protected by the **Sanctum Middleware**:
+- **Middleware**: `auth:sanctum`
+- **Requirement**: A valid `Bearer Token` must be provided in the Authorization header.
+- **Flow**: Login $\rightarrow$ Receive Token $\rightarrow$ Attach Token to Requests $\rightarrow$ Access Resources.
 
-class StoreCategoryRequest extends FormRequest
-{
-    public function authorize()
-    {
-        // Adjust as needed, e.g., only admins can create
-        return true;
-    }
+---
 
-    public function rules()
-    {
-        return [
-            'name' => 'required|string|max:255|unique:categories,name',
-            'description' => 'nullable|string|max:1000',
-        ];
-    }
-}
+## 🔍 Debugging Guide
+
+If you encounter issues, follow these steps to identify the root cause:
+
+### 1. Common HTTP Errors
+| Code | Meaning | Common Cause | Fix |
+| :--- | :--- | :--- | :--- |
+| **401** | Unauthorized | Missing or expired token | Check `Authorization: Bearer {token}` header |
+| **403** | Forbidden | Insufficient permissions | Check if the User role/status is `active` |
+| **422** | Unprocessable | Validation failed | Check request body against `app/Http/Requests` |
+| **404** | Not Found | ID does not exist | Verify the record ID in the database |
+| **500** | Server Error | Code crash / DB error | Check `storage/logs/laravel.log` |
+
+### 2. Log Checking
+The most detailed information is stored in the Laravel logs:
+```bash
+tail -f storage/logs/laravel.log
 ```
 
-### Update Form Request (`app/Http/Requests/UpdateCategoryRequest.php`)
-```php
-<?php
-
-namespace App\Http\Requests;
-
-use Illuminate\Foundation\Http\FormRequest;
-
-class UpdateCategoryRequest extends FormRequest
-{
-    public function authorize()
-    {
-        return true;
-    }
-
-    public function rules()
-    {
-        $categoryId = $this->route('category');
-        return [
-            'name' => "required|string|max:255|unique:categories,name,$categoryId",
-            'description' => 'nullable|string|max:1000',
-        ];
-    }
-}
+### 3. Database Verification
+If data isn't appearing as expected, check the migration state:
+```bash
+php artisan migrate:status
 ```
 
-### Resource (`app/Http/Resources/CategoryResource.php`)
-```php
-<?php
-
-namespace App\Http\Resources;
-
-use Illuminate\Http\Resources\Json\JsonResource;
-
-class CategoryResource extends JsonResource
-{
-    public function toArray($request)
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'description' => $this->description,
-            'created_at' => $this->created_at->toIso8601String(),
-            'updated_at' => $this->updated_at->toIso8601String(),
-        ];
-    }
-}
-```
-
-### Controller (`app/Http/Controllers/Api/CategoryController.php`)
-```php
-<?php
-
-namespace App\Http\Controllers\Api;
-
-use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoryResource;
-use App\Http\Requests\StoreCategoryRequest;
-use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Category;
-
-class CategoryController extends Controller
-{
-    public function index()
-    {
-        return CategoryResource::collection(Category::paginate(20));
-    }
-
-    public function store(StoreCategoryRequest $request)
-    {
-        $category = Category::create($request->validated());
-        return new CategoryResource($category);
-    }
-
-    public function show(Category $category)
-    {
-        return new CategoryResource($category);
-    }
-
-    public function update(UpdateCategoryRequest $request, Category $category)
-    {
-        $category->update($request->validated());
-        return new CategoryResource($category);
-    }
-
-    public function destroy(Category $category)
-    {
-        $category->delete();
-        return response(null, 204);
-    }
-}
-```
-
-### Routes (`routes/api.php`)
-```php
-use App\Http\Controllers\Api\CategoryController;
-
-Route::apiResource('categories', CategoryController::class)->middleware('auth:sanctum');
-```
-
-### Test Example (`tests/Feature/Api/CategoryTest.php`)
-```php
-<?php
-
-namespace Tests\Feature\Api;
-
-use Tests\TestCase;
-use App\Models\Category;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-
-class CategoryTest extends TestCase
-{
-    use RefreshDatabase;
-
-    public function test_can_create_category()
-    {
-        $payload = ['name' => 'Demo', 'description' => 'Demo category'];
-        $response = $this->actingAs($this->user, 'sanctum')
-                         ->postJson('/api/categories', $payload);
-        $response->assertCreated()->assertJsonFragment(['name' => 'Demo']);
-        $this->assertDatabaseHas('categories', $payload);
-    }
-
-    // Additional tests for index, show, update, delete ...
-}
-```
-
-These snippets illustrate a complete Laravel CRUD cycle for a `Category` entity and can be copied as a template for other resources.
-
+### 4. API Testing
+Use a tool like **Postman** or **Insomnia**. 
+**Pro Tip**: Set a "Collection Variable" for your `token` so you don't have to copy-paste it into every single request.
