@@ -23,7 +23,10 @@ class StoreShifsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shift_name' => ['required', 'string', 'max:255'],
+            'start_time' => ['required', 'datetime'],
+            'end_time' => ['required', 'datetime'],
+            'description' => ['required', 'string', 'max:255'],
         ];
     }
 }

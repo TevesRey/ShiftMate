@@ -23,7 +23,13 @@ class StoreAbsenceRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'employee_id' => ['required', 'string', 'max:255'],
+            'schedule_id' => ['required', 'string', 'maax:255'],
+            'absence_date' => ['required', 'date'],
+            'description' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'max:255'],
+            'reviewed_by' => ['required', 'string', 'max:255'],
+            'reviewed_at' => ['required', 'date'],
         ];
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('shift_name');
             $table->time('start_time');
-            $table->time('date_time');
+            $table->time('end_time');
             $table->string('description');
             $table->timestamps();
         });

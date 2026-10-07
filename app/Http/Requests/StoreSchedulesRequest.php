@@ -23,7 +23,10 @@ class StoreSchedulesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['required', 'string', 'max:255'],
+            'shift_id' => ['required', 'string', 'max:255'],
+            'work_date' => ['required', 'date'],
+            'status' => ['required', 'string', 'max:255'],
         ];
     }
 }
