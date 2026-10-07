@@ -12,7 +12,7 @@ class UpdateNotificationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,11 @@ class UpdateNotificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['sometimes', 'string', 'max:255'],
+            'title' => ['sometimes', 'string', 'max:255'],
+            'message' => ['sometimes', 'string', 'max:255'],
+            'type' => ['sometimes', 'string', 'max:255'],
+            'is_read' => ['sometimes', 'boolean'],
         ];
     }
 }

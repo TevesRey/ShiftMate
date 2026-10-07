@@ -12,7 +12,7 @@ class StoreEmployeesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -28,7 +28,7 @@ class StoreEmployeesRequest extends FormRequest
             'position' => ['required', 'string', 'max:255'],
             'department' => ['required', 'string', 'max:255'],
             'contact_number' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'in:active,inactive'],
         ];
     }
 }

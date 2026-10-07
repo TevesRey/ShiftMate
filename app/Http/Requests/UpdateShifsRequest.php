@@ -12,7 +12,7 @@ class UpdateShifsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class UpdateShifsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'shift_name' => ['sometimes', 'string', 'max:255'],
+            'start_time' => ['sometimes', 'date_format:H:i:s'],
+            'end_time' => ['sometimes', 'date_format:H:i:s'],
+            'description' => ['sometimes', 'string', 'max:255'],
         ];
     }
 }

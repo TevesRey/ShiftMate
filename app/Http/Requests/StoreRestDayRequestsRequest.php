@@ -12,7 +12,7 @@ class StoreRestDayRequestsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -27,7 +27,7 @@ class StoreRestDayRequestsRequest extends FormRequest
             'current_rest_day' => ['required', 'date'],
             'request_rest_day' => ['required', 'date'],
             'reason' => ['required', 'string', 'max:255'],
-            'status' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'in:pending,approved,rejected'],
             'reviewed_by' => ['required', 'string', 'max:255'],
             'reviewed_at' => ['required', 'date'],
         ];

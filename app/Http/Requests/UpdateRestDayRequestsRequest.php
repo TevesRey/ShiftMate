@@ -12,7 +12,7 @@ class UpdateRestDayRequestsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,13 @@ class UpdateRestDayRequestsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'employee_id' => ['sometimes', 'string', 'max:255'],
+            'current_rest_day' => ['sometimes', 'date'],
+            'request_rest_day' => ['sometimes', 'date'],
+            'reason' => ['sometimes', 'string', 'max:255'],
+            'status' => ['sometimes', 'string', 'in:pending,approved,rejected'],
+            'reviewed_by' => ['sometimes', 'string', 'max:255'],
+            'reviewed_at' => ['sometimes', 'date'],
         ];
     }
 }

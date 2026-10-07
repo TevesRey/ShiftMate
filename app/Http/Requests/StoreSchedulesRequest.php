@@ -12,7 +12,7 @@ class StoreSchedulesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +26,7 @@ class StoreSchedulesRequest extends FormRequest
             'user_id' => ['required', 'string', 'max:255'],
             'shift_id' => ['required', 'string', 'max:255'],
             'work_date' => ['required', 'date'],
-            'status' => ['required', 'string', 'max:255'],
+            'status' => ['required', 'string', 'in:active,inactive'],
         ];
     }
 }

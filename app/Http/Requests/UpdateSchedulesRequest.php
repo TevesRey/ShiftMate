@@ -12,7 +12,7 @@ class UpdateSchedulesRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,10 @@ class UpdateSchedulesRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'user_id' => ['sometimes', 'string', 'max:255'],
+            'shift_id' => ['sometimes', 'string', 'max:255'],
+            'work_date' => ['sometimes', 'date'],
+            'status' => ['sometimes', 'string', 'in:active,inactive'],
         ];
     }
 }
