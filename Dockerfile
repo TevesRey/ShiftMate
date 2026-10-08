@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libzip-dev \
     libicu-dev \
+    libsqlite3-dev \
     unzip \
     && rm -rf /var/lib/apt/lists/*
 
