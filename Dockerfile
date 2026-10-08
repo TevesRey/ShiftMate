@@ -1,5 +1,5 @@
 # --- Stage 1: Frontend Build ---
-FROM node:22-alpine AS frontend-builder
+FROM node:22-bookworm AS frontend-builder
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
