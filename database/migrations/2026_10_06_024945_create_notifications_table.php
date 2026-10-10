@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('message');
             $table->string('type');
-            $table->boolean('is_read')->default('false');
+            $table->boolean('is_read')->default(false);
             $table->timestamps();
         });
     }
