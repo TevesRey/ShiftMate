@@ -18,9 +18,18 @@ class AuthController extends Controller
      */
     public function register(RegisterRequest $request)
     {
+        if ($request->has('name')) {
+            $nameParts = explode(' ', $request->name, 2);
+            $firstName = $nameParts[0];
+            $lastName = $nameParts[1] ?? '';
+        } else {
+            $firstName = $request->first_name;
+            $lastName = $request->last_name;
+        }
+
         $user = User::create([
-            'first_name' => $request->first_name,
-            'last_name'  => $request->last_name,
+            'first_name' => $firstName,
+            'last_name'  => $lastName,
             'email'      => $request->email,
             'password'   => Hash::make($request->password),
             'role'       => 'employee', // Default from migration
