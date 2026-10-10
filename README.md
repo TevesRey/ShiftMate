@@ -19,7 +19,7 @@ Controllers are kept thin and focus on directing traffic.
 - **Response Format**: Returns consistent JSON responses with appropriate HTTP status codes (200 OK, 201 Created, 204 No Content, 404 Not Found).
 
 ### 3. Data Layer (`app/Models`)
-Models define the business entity and its relationships.
+Models define the business entity and their relationships.
 - **Fillable**: Only safe attributes are mass-assignable.
 - **Relations**:- `Schedules` $\rightarrow$ `User`, `Shifts`
 - `AbsenceRequests` $\rightarrow$ `Employees`
@@ -114,6 +114,189 @@ All seeded users share the same default password: `password`.
 - tressie.yundt@example.org : employee : password
 - moreilly@example.net : employee : password
 - ehagenes@example.com : employee : password
+
+---
+
+## 📡 API Testing (cURL Commands)
+
+Replace `YOUR_DOMAIN` with your actual domain (e.g., `http://localhost:8000`) and `YOUR_TOKEN` with the token received after login.
+
+### 🔑 Authentication
+**Register**
+```bash
+curl -X POST YOUR_DOMAIN/api/register -H "Content-Type: application/json" -d '{"name":"John Doe", "email":"john@example.com", "password":"password", "password_confirmation":"password"}'
+```
+
+**Login**
+```bash
+curl -X POST YOUR_DOMAIN/api/login -H "Content-Type: application/json" -d '{"email":"john@example.com", "password":"password"}'
+```
+
+**Get Current User**
+```bash
+curl -X GET YOUR_DOMAIN/api/me -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Logout**
+```bash
+curl -X POST YOUR_DOMAIN/api/logout -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 👥 Employees
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/employees -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/employees -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name":"Jane Doe", "user_id":1, "position":"Developer"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/employees/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/employees/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"position":"Senior Developer"}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/employees/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 🕒 Shifts
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/shifts -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/shifts -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name":"Morning Shift", "start_time":"08:00", "end_time":"16:00"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/shifts/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/shifts/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"name":"Early Morning Shift"}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/shifts/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 📅 Schedules
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/schedules -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/schedules -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employee_id":1, "shift_id":1, "date":"2023-10-10"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/schedules/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/schedules/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"shift_id":2}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/schedules/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 🏖 Rest Day Requests
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/rest-day-requests -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/rest-day-requests -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employee_id":1, "requested_date":"2023-10-15", "reason":"Personal"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/rest-day-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/rest-day-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"status":"approved"}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/rest-day-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 🤒 Absence Requests
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/absence-requests -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/absence-requests -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"employee_id":1, "start_date":"2023-10-12", "end_date":"2023-10-14", "reason":"Sick Leave"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/absence-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/absence-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"status":"rejected"}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/absence-requests/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+### 🔔 Notifications
+**List All**
+```bash
+curl -X GET YOUR_DOMAIN/api/notifications -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Create**
+```bash
+curl -X POST YOUR_DOMAIN/api/notifications -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"user_id":1, "message":"Your shift has been updated"}'
+```
+
+**Get One**
+```bash
+curl -X GET YOUR_DOMAIN/api/notifications/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
+
+**Update**
+```bash
+curl -X PUT YOUR_DOMAIN/api/notifications/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Content-Type: application/json" -H "Accept: application/json" -d '{"read":true}'
+```
+
+**Delete**
+```bash
+curl -X DELETE YOUR_DOMAIN/api/notifications/1 -H "Authorization: Bearer YOUR_TOKEN" -H "Accept: application/json"
+```
 
 ---
 
