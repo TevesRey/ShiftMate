@@ -2,8 +2,8 @@
 import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
-import PasskeyVerify from '@/components/PasskeyVerify.vue';
-import TeamInvitationAlert from '@/components/TeamInvitationAlert.vue';
+import PasskeyVerify from '@/features/security/components/PasskeyVerify.vue';
+import TeamInvitationAlert from '@/features/teams/components/TeamInvitationAlert.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

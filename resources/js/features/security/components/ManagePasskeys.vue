@@ -3,8 +3,8 @@ import { router } from '@inertiajs/vue3';
 import { KeyRound } from '@lucide/vue';
 import type { Passkey } from '@/types/auth';
 import Heading from '@/components/Heading.vue';
-import PasskeyItem from '@/components/PasskeyItem.vue';
-import PasskeyRegister from '@/components/PasskeyRegister.vue';
+import PasskeyItem from '@/features/security/components/PasskeyItem.vue';
+import PasskeyRegister from '@/features/security/components/PasskeyRegister.vue';
 import { destroy } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyRegistrationController';
 
 export type Props = {

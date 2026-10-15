@@ -2,7 +2,7 @@
 import { router, usePage } from '@inertiajs/vue3';
 import { Check, ChevronsUpDown, Plus, Users } from '@lucide/vue';
 import { computed, onMounted, onUnmounted, ref } from 'vue';
-import CreateTeamModal from '@/components/CreateTeamModal.vue';
+import CreateTeamModal from '@/features/teams/components/CreateTeamModal.vue';
 import { Button } from '@/components/ui/button';
 import {
     DropdownMenu,
