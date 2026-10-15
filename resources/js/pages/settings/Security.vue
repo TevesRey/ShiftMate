@@ -7,10 +7,10 @@ import PasswordInput from '@/components/PasswordInput.vue';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { edit } from '@/routes/security';
-import type { Props as ManagePasskeysProps } from '@/components/ManagePasskeys.vue';
-import ManagePasskeys from '@/components/ManagePasskeys.vue';
-import type { Props as ManageTwoFactorProps } from '@/components/ManageTwoFactor.vue';
-import ManageTwoFactor from '@/components/ManageTwoFactor.vue';
+import type { Props as ManagePasskeysProps } from '@/features/security/components/ManagePasskeys.vue';
+import ManagePasskeys from '@/features/security/components/ManagePasskeys.vue';
+import type { Props as ManageTwoFactorProps } from '@/features/security/components/ManageTwoFactor.vue';
+import ManageTwoFactor from '@/features/security/components/ManageTwoFactor.vue';
 
 // oxfmt-ignore
 type Props = {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { Head } from '@inertiajs/vue3';
-import PendingInvitationsModal from '@/components/PendingInvitationsModal.vue';
+import PendingInvitationsModal from '@/features/teams/components/PendingInvitationsModal.vue';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { dashboard } from '@/routes';
 import type { DashboardInvitation, Team } from '@/types';

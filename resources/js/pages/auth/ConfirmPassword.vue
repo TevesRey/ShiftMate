@@ -10,7 +10,7 @@ import {
     index as confirmOptions,
     store as confirmStore,
 } from '@/actions/Laravel/Passkeys/Http/Controllers/PasskeyConfirmationController';
-import PasskeyVerify from '@/components/PasskeyVerify.vue';
+import PasskeyVerify from '@/features/security/components/PasskeyVerify.vue';
 
 defineOptions({
     layout: {
