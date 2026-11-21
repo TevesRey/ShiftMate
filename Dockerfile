@@ -12,6 +12,12 @@ RUN install-php-extensions \
     gd \
     opcache
 
+# Remove file capabilities that restricted container hosts may reject.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends libcap2-bin \
+    && (setcap -r /usr/local/bin/frankenphp || true) \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /app
