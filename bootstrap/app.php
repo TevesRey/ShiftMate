@@ -42,7 +42,7 @@ $app = Application::configure(basePath: $projectRoot)
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Vercel terminates HTTPS before forwarding requests to the container.
+        // Trust Vercel's proxy and register the app's web middleware.
         $middleware->trustProxies(at: '*');
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
@@ -53,7 +53,9 @@ $app = Application::configure(basePath: $projectRoot)
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
+        // Configure JSON responses for API errors.
         $exceptions->shouldRenderJsonWhen(
+            // Keep all API responses in JSON format.
             fn (Request $request) => $request->is('api/*') || $request->expectsJson(),
         );
     })
