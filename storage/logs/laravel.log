@@ -946,3 +946,44 @@ Stack trace:
 #70 C:/Users/sampa/Downloads/11/10/shiftmate/shiftmate/vendor/laravel/framework/src/Illuminate/Foundation/resources/server.php(23): require_once('C://Users//sampa//...')
 #71 {main}
 "} 
+[2026-11-21 07:15:48] local.ERROR: The "--forc" option does not exist. {"exception":"[object] (Symfony\\Component\\Console\\Exception\\RuntimeException(code: 0): The \"--forc\" option does not exist. at C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Input/ArgvInput.php:226)
+[stacktrace]
+#0 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Input/ArgvInput.php(155): Symfony/Component/Console/Input/ArgvInput->addLongOption('forc', NULL)
+#1 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Input/ArgvInput.php(88): Symfony/Component/Console/Input/ArgvInput->parseLongOption('--forc')
+#2 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Input/ArgvInput.php(77): Symfony/Component/Console/Input/ArgvInput->parseToken('--forc', true)
+#3 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Input/Input.php(53): Symfony/Component/Console/Input/ArgvInput->parse()
+#4 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Command/Command.php(238): Symfony/Component/Console/Input/Input->bind(Object(Symfony/Component/Console/Input/InputDefinition))
+#5 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/laravel/framework/src/Illuminate/Console/Command.php(261): Symfony/Component/Console/Command/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Illuminate/Console/OutputStyle))
+#6 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php(1152): Illuminate/Console/Command->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#7 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php(380): Symfony/Component/Console/Application->doRunCommand(Object(Illuminate/Database/Console/Migrations/MigrateCommand), Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#8 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php(219): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#9 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(205): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#10 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1243): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#11 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#12 {main}
+"} 
+[2026-11-21 07:29:12] local.ERROR: Command "db:seedn" is not defined.
+
+Did you mean one of these?
+    db
+    db:monitor
+    db:seed
+    db:show
+    db:table
+    db:wipe {"exception":"[object] (Symfony\\Component\\Console\\Exception\\CommandNotFoundException(code: 0): Command \"db:seedn\" is not defined.
+
+Did you mean one of these?
+    db
+    db:monitor
+    db:seed
+    db:show
+    db:table
+    db:wipe at C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php:786)
+[stacktrace]
+#0 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php(322): Symfony/Component/Console/Application->find('db:seedn')
+#1 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/symfony/console/Application.php(219): Symfony/Component/Console/Application->doRun(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#2 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(205): Symfony/Component/Console/Application->run(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#3 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(1243): Illuminate/Foundation/Console/Kernel->handle(Object(Symfony/Component/Console/Input/ArgvInput), Object(Symfony/Component/Console/Output/ConsoleOutput))
+#4 C:/Users/sampa/Downloads/SHIFTMATE_SYSTEM/artisan(16): Illuminate/Foundation/Application->handleCommand(Object(Symfony/Component/Console/Input/ArgvInput))
+#5 {main}
+"} 

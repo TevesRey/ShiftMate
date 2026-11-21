@@ -17,7 +17,10 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'pgsql'),
+    // Keep production on PostgreSQL even if an old DB_CONNECTION still says sqlite.
+        'default' => (env('APP_ENV') === 'production' || env('DATABASE_URL'))
+            ? 'pgsql'
+            : env('DB_CONNECTION', 'sqlite'),
 
     /*
     |--------------------------------------------------------------------------

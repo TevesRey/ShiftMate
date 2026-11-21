@@ -32,6 +32,9 @@ RUN composer install \
     --no-progress \
     --optimize-autoloader
 
+# Ignore any locally generated connection config in the image.
+RUN rm -f bootstrap/cache/config.php
+
 RUN mkdir -p bootstrap/cache \
     && mkdir -p /tmp/shiftmate-storage/app/private \
     /tmp/shiftmate-storage/app/public \

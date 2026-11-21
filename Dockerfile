@@ -12,7 +12,6 @@ RUN install-php-extensions \
     zip \
     gd \
     opcache
-
 # Remove file capabilities that restricted container hosts may reject.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends libcap2-bin \
@@ -31,6 +30,9 @@ RUN composer install \
     --prefer-dist \
     --no-progress \
     --optimize-autoloader
+
+# Ignore any locally generated connection config in the image.
+RUN rm -f bootstrap/cache/config.php
 
 RUN mkdir -p bootstrap/cache \
     && mkdir -p /tmp/shiftmate-storage/app/private \
