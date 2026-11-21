@@ -1,0 +1,10 @@
+{
+  "$schema": "https://www.schemastore.org/package.json",
+  "private": true,
+  "scripts": {
+    "build": "echo ShiftMate uses prebuilt public CSS and plain JavaScript - no Vite build is required.",
+    "dev": "echo ShiftMate uses prebuilt public CSS and plain JavaScript - no Vite dev server is required.",
+    "check": "node --check public/shiftmate-ui-assets/app.js",
+    "types:check": "echo No TypeScript is used in this project."
+  }
+}

@@ -1,0 +1,21 @@
+# Git
+.git
+.gitignore
+
+# Laravel/PHP
+vendor/
+storage/*.key
+.env
+.env.backup
+.phpunit.result.cache
+
+# Node/Frontend
+node_modules/
+npm-debug.log
+yarn-error.log
+public/build/
+
+# OS/IDE
+.DS_Store
+.idea/
+.vscode/

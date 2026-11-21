@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class AbsenceRequests extends Model
+{
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
+
+    protected $fillable = [
+        'employee_id',
+        'absence_date',
+        'description',
+        'status',
+        'reviewed_by',
+        'reviewed_at',
+    ];
+
+    public function employee()
+    {
+        return $this->belongsTo(Employees::class);
+    }
+    public function reviewer()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+}
