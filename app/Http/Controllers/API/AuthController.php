@@ -455,8 +455,7 @@ class AuthController extends Controller
 
         $user = $request->user();
 
-        // Local development uses Laravel's public disk. Production can set
-        // FILESYSTEM_DISK=s3 so profile photos survive stateless Vercel instances.
+        // Use local storage in development; configure S3 for durable production uploads.
         $disk = config('filesystems.default') === 's3' ? 's3' : 'public';
 
         try {

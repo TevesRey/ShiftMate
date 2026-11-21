@@ -14,9 +14,8 @@ $storagePath = (string) env(
     env('VERCEL') ? sys_get_temp_dir().'/shiftmate-storage' : $projectRoot.'/storage'
 );
 
-// Ensure Laravel's writable runtime paths exist. Vercel containers are
-// stateless, so runtime files are placed under /tmp there; durable data must
-// live in the configured database/object-storage service.
+// Keep writable runtime files in the configured path; container filesystems
+// may be ephemeral, so durable data belongs in a database or object storage.
 $runtimeDirectories = [
     $projectRoot.'/bootstrap/cache',
     $storagePath.'/app/private',
@@ -42,7 +41,7 @@ $app = Application::configure(basePath: $projectRoot)
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Trust Vercel's proxy and register the app's web middleware.
+        // Trust the platform proxy so Laravel detects the original HTTPS request.
         $middleware->trustProxies(at: '*');
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
