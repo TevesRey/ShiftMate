@@ -50,4 +50,4 @@ ENV APP_ENV=production \
     LARAVEL_STORAGE_PATH=/tmp/shiftmate-storage
 
 EXPOSE 80
-CMD ["frankenphp", "run", "--config", "/etc/frankenphp/Caddyfile"]
+CMD ["sh", "-c", "rm -f bootstrap/cache/config.php && exec frankenphp run --config /etc/frankenphp/Caddyfile"]
